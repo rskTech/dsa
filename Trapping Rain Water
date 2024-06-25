@@ -1,0 +1,43 @@
+Trapping Rain Water : Leetcode 42
+
+Working solution
+
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        twater = 0
+        for p in range(len(height)):
+            leftp, rightp = p, p
+            maxl, maxr = 0, 0
+            while leftp >= 0:
+                maxl = max(height[leftp], maxl)
+                leftp -= 1
+            while rightp < len(height):
+                maxr = max(height[rightp], maxr)
+                rightp += 1
+            cwater = min(maxl, maxr) - height[p]
+            if cwater > 0:
+                twater += cwater
+        return twater
+
+Optimized solution:
+
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        twater = 0
+        maxl, maxr = 0,0
+        p1 = 0
+        p2 = len(height) - 1
+        while p1 != p2:
+            if height[p1] < height[p2]:
+                if height[p1] > maxl:
+                    maxl = height[p1]
+                else:
+                    twater += maxl - height[p1]
+                p1 += 1
+            else:
+                if height[p2] > maxr:
+                    maxr = height[p2]
+                else:
+                    twater += maxr - height[p2]
+                p2 -= 1
+        return twater
